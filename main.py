@@ -1,7 +1,6 @@
 import matplotlib.pyplot as plt
 import tkinter as tk
 from tkinter import ttk
-from get_bitmap_old import Bitmap
 from image_processing import Image
 from nn import NN
 import numpy as np
@@ -14,7 +13,6 @@ class PaintApp:
         self.canvas_height = 400
         self.pixel_vector = x
         
-        self.bitmap = Bitmap((self.canvas_width, self.canvas_height))
         self.image = Image((self.canvas_width, self.canvas_height))
         self.nn = NN()
 
