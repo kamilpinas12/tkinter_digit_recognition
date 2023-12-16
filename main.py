@@ -15,9 +15,6 @@ class PaintApp:
 
 
         self.predicted_label = tk.StringVar()
-
-
-
         
         self.image = Image((self.canvas_width, self.canvas_height))
         self.nn = NN()
@@ -44,10 +41,6 @@ class PaintApp:
         self.file_menu.add_command(label="Exit", command=self.root.quit)
 
 
-    def show_prediction(self, A):
-        s = str(np.argmax(A)) + " ~ " + str(int(np.max(A)*100)) + " %"
-        self.predicted_label.set(s)
-
 
     def setup_tools(self):
         self.selected_tool = "pen"
@@ -61,9 +54,6 @@ class PaintApp:
 
         self.clear_button = ttk.Button(self.tool_frame, text="Clear", command=self.clear_canvas)
         self.clear_button.pack(side=tk.TOP, padx=5, pady=5)
-
-        self.show_image_button = ttk.Button(self.tool_frame, text="Show converted image", command=self.show_img)
-        self.show_image_button.pack(side=tk.TOP, padx=5, pady=5)
 
         self.clear_button = ttk.Button(self.tool_frame, text="Predict", command=self.predict)
         self.clear_button.pack(side=tk.TOP, padx=5, pady=20)
@@ -90,12 +80,19 @@ class PaintApp:
 
 
     def predict(self):
-        self.image.process_image()
-        img = self.image.get_converted_image()
-        res = self.nn.forward_prop(img).reshape(-1)
+        img = self.image.process_image()
 
-        x = np.linspace(0,9,10)
-        self.show_prediction(res)
+        prob = []
+        number = ''
+
+        for i, image in enumerate(img):
+            ret = self.nn.forward_prop(image).reshape(-1)
+            number += str(np.argmax(ret))
+            prob.append(np.max(ret))
+
+        s = number + "  ~ " + str(int(np.min(prob)*100)) + " %"
+        self.predicted_label.set(s)
+
 
 
 
