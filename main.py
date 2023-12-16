@@ -77,7 +77,6 @@ class PaintApp:
 
 
 
-
     def draw(self, event):
         if self.selected_tool == "pen":
             if self.prev_x is not None and self.prev_y is not None:
