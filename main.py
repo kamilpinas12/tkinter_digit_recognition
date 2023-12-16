@@ -137,7 +137,7 @@ class PaintApp:
 
 if __name__ == "__main__":
     root = tk.Tk()
-    root.title("Paint Application")
+    root.title("Digit recognition")
     app = PaintApp(root)
     root.mainloop()
 

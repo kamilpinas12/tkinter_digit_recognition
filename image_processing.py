@@ -115,7 +115,7 @@ class Image():
         img = np.insert(img, 0, label)
         img = img.reshape(1,img.size)
         df = pd.DataFrame(img)
-        df.to_csv('data_3.csv', mode='a', index=False, header=False)
+        df.to_csv('data/data_3.csv', mode='a', index=False, header=False)
 
 
 
@@ -130,6 +130,6 @@ class Image():
                 else:
                     df.iloc[i, j] = '@'
 
-        df.to_csv('bitmap.csv', index=False, header=False)
+        df.to_csv('data/bitmap.csv', index=False, header=False)
 
 
