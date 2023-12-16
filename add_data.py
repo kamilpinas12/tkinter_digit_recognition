@@ -125,11 +125,9 @@ class PaintApp:
     def get_pixel_vector(self):
         return self.pixel_vector
 
-    
 
-if __name__ == "__main__":
-    root = tk.Tk()
-    root.title("Paint Application")
-    app = PaintApp(root)
-    root.mainloop()
-    print(app.pixel_vector)
+root = tk.Tk()
+root.title("Paint Application")
+app = PaintApp(root)
+root.mainloop()
+

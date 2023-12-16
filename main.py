@@ -12,6 +12,12 @@ class PaintApp:
         self.canvas_width = 400
         self.canvas_height = 400
         self.pixel_vector = x
+
+
+        self.predicted_label = tk.StringVar()
+
+
+
         
         self.image = Image((self.canvas_width, self.canvas_height))
         self.nn = NN()
@@ -38,6 +44,10 @@ class PaintApp:
         self.file_menu.add_command(label="Exit", command=self.root.quit)
 
 
+    def show_prediction(self, A):
+        s = str(np.argmax(A)) + " ~ " + str(int(np.max(A)*100)) + " %"
+        self.predicted_label.set(s)
+
 
     def setup_tools(self):
         self.selected_tool = "pen"
@@ -55,6 +65,23 @@ class PaintApp:
         self.clear_button = ttk.Button(self.tool_frame, text="Predict", command=self.predict)
         self.clear_button.pack(side=tk.TOP, padx=5, pady=5)
 
+        self.show_image_button = ttk.Button(self.tool_frame, text="Show img", command=self.show_img)
+        self.show_image_button.pack(side=tk.TOP, padx=5, pady=5)
+
+
+        self.txt_label = ttk.Label(self.tool_frame, text="Prediction: ")
+        #self.txt_label.pack(side=tk.TOP, padx=5, pady=20)
+        self.txt_label.place(y=200, x=13)
+
+
+        self.prediction_label = ttk.Label(self.tool_frame, textvariable=self.predicted_label)
+        self.prediction_label.place(y = 222, x = 15)
+
+
+
+    def show_img(self):
+        self.image.show_image()
+
 
 
     def setup_events(self):
@@ -69,11 +96,7 @@ class PaintApp:
         res = self.nn.forward_prop(img).reshape(-1)
 
         x = np.linspace(0,9,10)
-
-        plt.clf()
-        plt.bar(x, res)
-        plt.xticks(x)
-        plt.show()
+        self.show_prediction(res)
 
 
 
@@ -118,5 +141,5 @@ if __name__ == "__main__":
     root.title("Paint Application")
     app = PaintApp(root)
     root.mainloop()
-    print(app.pixel_vector)
+
 

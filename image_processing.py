@@ -1,5 +1,6 @@
 import numpy as np
 import pandas as pd
+import matplotlib.pyplot as plt
 
 class Image():
     def __init__(self, window_size):
@@ -35,14 +36,14 @@ class Image():
         coordinates = list(zip(self.x_cord, self.y_cord))
 
         # add thicker lines
-        for x, y in coordinates:
-            for i in range(0):
-                for j in range(0):
-                    try:
-                        self.x_cord = np.append(self.x_cord, x + i)
-                        self.y_cord = np.append(self.y_cord, y + j)
-                    except:
-                        continue
+        # for x, y in coordinates:
+        #     for i in range(0):
+        #         for j in range(0):
+        #             try:
+        #                 self.x_cord = np.append(self.x_cord, x + i)
+        #                 self.y_cord = np.append(self.y_cord, y + j)
+        #             except:
+        #                 continue
 
 
         # # separate digits
@@ -58,21 +59,8 @@ class Image():
         #     else:
         #         digit_cord.append([])
         #         digit_number += 1
-
-
         # print(digit_number)
-
-
-
-
-
-
-
-
-
-
-        
-
+                    
 
         max_x = np.max(self.x_cord)
         max_y = np.max(self.y_cord)
@@ -92,18 +80,28 @@ class Image():
             self.x_cord -= min_x
 
 
+
         for x, y in list(zip(self.x_cord, self.y_cord)):
-            x_1 = int(24*x/size) + 2
-            y_1 = int(24*y/size) + 2
+            x_1 = int(17*x/size) + 6
+            y_1 = int(17*y/size) + 6
             for i in range(-1, 1):
                 for j in range(-1, 1):
                     try:
-                        self.bitmap[abs(y_1 + i), abs(x_1 + j)] = 1
+                        if j == 0:
+                            self.bitmap[y_1 + i, x_1 + j] = 1
+                        elif self.bitmap[y_1 + i, x_1 + j] == 0:
+                            self.bitmap[y_1 + i, x_1 + j] = 0.5
                     except:
                         continue
-            self.bitmap[y_1, x_1] = 1
 
         self.bitmap_to_csv()
+
+
+    def show_image(self):
+        plt.clf()
+        plt.gray()
+        plt.imshow(self.bitmap, interpolation='nearest')
+        plt.show()
 
 
 
@@ -117,7 +115,7 @@ class Image():
         img = np.insert(img, 0, label)
         img = img.reshape(1,img.size)
         df = pd.DataFrame(img)
-        df.to_csv('data_2.csv', mode='a', index=False, header=False)
+        df.to_csv('data_3.csv', mode='a', index=False, header=False)
 
 
 

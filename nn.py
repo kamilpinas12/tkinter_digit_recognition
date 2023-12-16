@@ -22,11 +22,11 @@ class NN():
 
 
     def init_params(self):
-        self.W1 = np.random.rand(30, 784) - 0.5
-        self.b1 = np.random.rand(30, 1) - 0.5
-        self.W2 = np.random.rand(15, 30) - 0.5
-        self.b2 = np.random.rand(15, 1) - 0.5
-        self.W3 = np.random.rand(10, 15) - 0.5
+        self.W1 = np.random.rand(50, 784) - 0.5
+        self.b1 = np.random.rand(50, 1) - 0.5
+        self.W2 = np.random.rand(20, 50) - 0.5
+        self.b2 = np.random.rand(20, 1) - 0.5
+        self.W3 = np.random.rand(10, 20) - 0.5
         self.b3 = np.random.rand(10, 1) - 0.5
 
         self.save_params()
