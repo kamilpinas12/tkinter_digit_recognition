@@ -4,6 +4,7 @@ from tkinter import ttk
 from image_processing import Image
 from nn import NN
 import numpy as np
+import pandas as pd
 
 
 
@@ -15,6 +16,16 @@ class PaintApp:
         self.pixel_vector = x
 
         self.label = tk.StringVar()
+        self.number_counts = tk.StringVar()
+
+        df = pd.read_csv("data_3.csv")
+        self.counts = df.shape[0]
+        self.number_counts.set(self.counts)
+
+
+
+
+
 
         self.labels = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9']
         self.random_label = np.random.randint(0, 10)
@@ -67,7 +78,14 @@ class PaintApp:
         self.number_label.pack(side=tk.TOP, padx=5, pady=5)
 
         self.submit_button = ttk.Button(self.tool_frame, text="Submit", command=self.submit)
-        self.submit_button.pack(side=tk.TOP, padx=5, pady=5)
+        self.submit_button.pack(side=tk.TOP, padx=5, pady=15)
+
+
+        self.num_label = ttk.Label(self.tool_frame, text='Numbers in dataset:')
+        self.num_label.pack(side=tk.TOP, padx=5, pady=5)   
+
+        self.counts_label = ttk.Label(self.tool_frame, textvariable=self.number_counts)
+        self.counts_label.pack(side=tk.TOP, padx=5, pady=1)
 
 
 
@@ -82,6 +100,9 @@ class PaintApp:
     def submit(self):
         self.image.process_image()
         self.image.append_data_to_csv(label=self.random_label)
+
+        self.counts += 1
+        self.number_counts.set(self.counts)
 
         self.random_label = np.random.randint(0, 10)
         self.label.set(self.labels[self.random_label])

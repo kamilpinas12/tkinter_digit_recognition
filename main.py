@@ -62,15 +62,14 @@ class PaintApp:
         self.clear_button = ttk.Button(self.tool_frame, text="Clear", command=self.clear_canvas)
         self.clear_button.pack(side=tk.TOP, padx=5, pady=5)
 
-        self.clear_button = ttk.Button(self.tool_frame, text="Predict", command=self.predict)
-        self.clear_button.pack(side=tk.TOP, padx=5, pady=5)
-
-        self.show_image_button = ttk.Button(self.tool_frame, text="Show img", command=self.show_img)
+        self.show_image_button = ttk.Button(self.tool_frame, text="Show converted image", command=self.show_img)
         self.show_image_button.pack(side=tk.TOP, padx=5, pady=5)
+
+        self.clear_button = ttk.Button(self.tool_frame, text="Predict", command=self.predict)
+        self.clear_button.pack(side=tk.TOP, padx=5, pady=20)
 
 
         self.txt_label = ttk.Label(self.tool_frame, text="Prediction: ")
-        #self.txt_label.pack(side=tk.TOP, padx=5, pady=20)
         self.txt_label.place(y=200, x=13)
 
 
