@@ -21,24 +21,10 @@ class PaintApp:
 
         self.canvas = tk.Canvas(self.root, width=self.canvas_width, height=self.canvas_height, bg="white", bd=3, relief=tk.SUNKEN)
         self.canvas.pack(side=tk.LEFT, fill=tk.BOTH, expand=True)
-        self.setup_navbar()
         self.setup_tools()
         self.setup_events()
         self.prev_x = None
         self.prev_y = None
-
-
-
-    def setup_navbar(self):
-        self.navbar = tk.Menu(self.root)
-        self.root.config(menu=self.navbar)
-
-        # File menu
-        self.file_menu = tk.Menu(self.navbar, tearoff=False)
-        self.navbar.add_cascade(label="File", menu=self.file_menu)
-        self.file_menu.add_command(label="Clear bitmap", command=self.take_snapshot)
-        self.file_menu.add_separator()
-        self.file_menu.add_command(label="Exit", command=self.root.quit)
 
 
 
@@ -60,11 +46,11 @@ class PaintApp:
 
 
         self.txt_label = ttk.Label(self.tool_frame, text="Prediction: ")
-        self.txt_label.place(y=200, x=13)
+        self.txt_label.place(y=200, x=5)
 
 
         self.prediction_label = ttk.Label(self.tool_frame, textvariable=self.predicted_label)
-        self.prediction_label.place(y = 222, x = 15)
+        self.prediction_label.place(y = 222, x = 5)
 
 
 
@@ -90,7 +76,14 @@ class PaintApp:
             number += str(np.argmax(ret))
             prob.append(np.max(ret))
 
-        s = number + "  ~ " + str(int(np.min(prob)*100)) + " %"
+        final_prob = 1
+        for p in prob:
+            final_prob *= p
+
+        final_prob *= 100
+        formatted_float = "{:.{}f}".format(final_prob, 2) 
+
+        s = number + "  ~" + formatted_float + " %"
         self.predicted_label.set(s)
 
 
@@ -115,7 +108,6 @@ class PaintApp:
 
 
     def clear_canvas(self):
-        self.image.process_image()
         self.image.clear()
         self.canvas.delete("all")
 

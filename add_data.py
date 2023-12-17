@@ -98,8 +98,12 @@ class PaintApp:
 
 
     def submit(self):
-        self.image.process_image()
-        self.image.append_data_to_csv(label=self.random_label)
+        img = self.image.process_image()
+        if len(img) != 1:
+            return None
+
+
+        self.image.append_data_to_csv(img[0], label=self.random_label)
 
         self.counts += 1
         self.number_counts.set(self.counts)
@@ -135,8 +139,10 @@ class PaintApp:
         self.image.clear()
         self.canvas.delete("all")
 
+
     def take_snapshot(self):
         pass
+
 
     def undo(self):
         items = self.canvas.find_all()
