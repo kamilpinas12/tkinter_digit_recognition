@@ -9,8 +9,6 @@ class Image():
         self.size_x = 28
         self.size_y = 28
         self.window_size = window_size
-        self.bitmap = np.zeros((self.size_x, self.size_y))
-        self.new_data = None
 
 
     def add_coordinates(self, x, y):
@@ -18,25 +16,26 @@ class Image():
             self.x_cord = np.append(self.x_cord, x)
             self.y_cord = np.append(self.y_cord, y)
                     
-    def unprocessed_data_to_csv(self):
-        pass
-
 
     def clear(self):
-        self.x_cord = np.array([])
-        self.y_cord = np.array([])
-        self.bitmap = np.zeros((self.size_x, self.size_y))
-
+        self.x_cord = np.array([]).astype(int)
+        self.y_cord = np.array([]).astype(int)
 
 
     def process_image(self):
+        # function takes coordinates of drawn points and convert it to list of 28x28 bitmaps of numbers which can be process by neural network
+        # sometimes when you draw one digit this funciton convert it to several digit, it happens when you draw to fast and tkinter gives to little coordinates 
+        # thats why there is multiple_digit parameter, when you use this function with add_data.py there are always one digit so you don't want to split, hope it make sense
+        # this function isn't the best honestly, but works in most cases
         if self.x_cord.size == 0 or self.x_cord.size == None:
             return None
 
 
-        # separate digits
         coordinates = list(zip(self.x_cord, self.y_cord))
+        digit_number = 0
         digit_cord = [[]]
+
+        # separate digits
         coordinates.sort(key=lambda x: x[0])
         digit_number = 0
         digit_cord[digit_number].append(coordinates[0])
@@ -48,8 +47,9 @@ class Image():
                 digit_cord.append([])
                 digit_number += 1
                 digit_cord[digit_number].append(coordinates[i])
-                    
-        
+                        
+
+
 
 
         images = []
@@ -93,8 +93,7 @@ class Image():
                             elif img[y_1 + i, x_1 + j] == 0:
                                 img[y_1 + i, x_1 + j] = 0.5
                         except:
-                            continue
-            self.bitmap_to_csv(img)            
+                            continue          
             
             images.append(img.reshape((784, 1)))
 
@@ -102,37 +101,13 @@ class Image():
     
 
 
-
-
-
-    def show_image(self):
-        plt.clf()
-        plt.gray()
-        plt.imshow(self.bitmap, interpolation='nearest')
-        plt.show()
-
-
-
     def append_data_to_csv(self, img, label):
         img = img.reshape(-1)
         img = np.insert(img, 0, label)
         img = img.reshape(1,img.size)
         df = pd.DataFrame(img)
-        df.to_csv('data_3.csv', mode='a', index=False, header=False)
+        df.to_csv('data/data_3.csv', mode='a', index=False, header=False)
 
 
-
-
-
-    def bitmap_to_csv(self, img):
-        df = pd.DataFrame(img)
-        for i in range(int(df.shape[0])):
-            for j in range(int(df.shape[1])):
-                if df.iloc[i, j] == 0:
-                    df.iloc[i, j] = ' '
-                else:
-                    df.iloc[i, j] = '@'
-
-        df.to_csv('bitmap.csv', index=False, header=False)
 
 

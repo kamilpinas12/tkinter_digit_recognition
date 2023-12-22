@@ -9,10 +9,9 @@ import numpy as np
 class PaintApp:
     def __init__(self, root, x = None, *args):
         self.root = root
-        self.canvas_width = 400
-        self.canvas_height = 400
+        self.canvas_width = 600         #org 400x400 (must be square!)
+        self.canvas_height = 600
         self.pixel_vector = x
-
 
         self.predicted_label = tk.StringVar()
         
@@ -46,23 +45,16 @@ class PaintApp:
 
 
         self.txt_label = ttk.Label(self.tool_frame, text="Prediction: ")
-        self.txt_label.place(y=200, x=5)
+        self.txt_label.place(y=200, x=2)
 
 
         self.prediction_label = ttk.Label(self.tool_frame, textvariable=self.predicted_label)
-        self.prediction_label.place(y = 222, x = 5)
-
-
-
-    def show_img(self):
-        self.image.show_image()
-
+        self.prediction_label.place(y = 222, x = 2)
 
 
     def setup_events(self):
         self.canvas.bind("<B1-Motion>", self.draw)
         self.canvas.bind("<ButtonRelease-1>", self.release)
-
 
 
     def predict(self):
@@ -72,21 +64,15 @@ class PaintApp:
         number = ''
 
         for i, image in enumerate(img):
-            ret = self.nn.forward_prop(image).reshape(-1)
-            number += str(np.argmax(ret))
-            prob.append(np.max(ret))
+            nn_output = self.nn.forward_prop(image).reshape(-1)
+            number += str(np.argmax(nn_output))
+            prob.append(np.max(nn_output))
 
         final_prob = 1
         for p in prob:
             final_prob *= p
-
-        final_prob *= 100
-        formatted_float = "{:.{}f}".format(final_prob, 2) 
-
-        s = number + "  ~" + formatted_float + " %"
+        s = number + "  ~" + str(int(final_prob*100)) + " %"
         self.predicted_label.set(s)
-
-
 
 
     def draw(self, event):
@@ -100,29 +86,17 @@ class PaintApp:
             self.prev_y = event.y
 
 
-
     def release(self, event):
         self.prev_x = None
         self.prev_y = None
-
 
 
     def clear_canvas(self):
         self.image.clear()
         self.canvas.delete("all")
 
-    def take_snapshot(self):
-        pass
 
-    def undo(self):
-        items = self.canvas.find_all()
-        if items:
-            self.canvas.delete(items[-1])
-    
-    def get_pixel_vector(self):
-        return self.pixel_vector
 
-    
 
 if __name__ == "__main__":
     root = tk.Tk()

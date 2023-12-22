@@ -18,13 +18,10 @@ class PaintApp:
         self.label = tk.StringVar()
         self.number_counts = tk.StringVar()
 
-        df = pd.read_csv("data_3.csv")
+        # get number of digits in dataset 
+        df = pd.read_csv("data/data_3.csv")
         self.counts = df.shape[0]
         self.number_counts.set(self.counts)
-
-
-
-
 
 
         self.labels = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9']
@@ -48,14 +45,6 @@ class PaintApp:
     def setup_navbar(self):
         self.navbar = tk.Menu(self.root)
         self.root.config(menu=self.navbar)
-
-        # File menu
-        self.file_menu = tk.Menu(self.navbar, tearoff=False)
-        self.navbar.add_cascade(label="File", menu=self.file_menu)
-        self.file_menu.add_command(label="Clear bitmap", command=self.take_snapshot)
-        self.file_menu.add_separator()
-        self.file_menu.add_command(label="Exit", command=self.root.quit)
-
 
 
     def setup_tools(self):
@@ -96,15 +85,19 @@ class PaintApp:
         self.canvas.bind("<Return>", self.submit)
 
 
-
     def submit(self):
         img = self.image.process_image()
+
         if len(img) != 1:
+            self.random_label = np.random.randint(0, 10)
+            self.label.set(self.labels[self.random_label])
+            self.image.clear()
+            self.image.clear()
+            self.canvas.delete("all")
             return None
 
 
         self.image.append_data_to_csv(img[0], label=self.random_label)
-
         self.counts += 1
         self.number_counts.set(self.counts)
 
@@ -140,21 +133,10 @@ class PaintApp:
         self.canvas.delete("all")
 
 
-    def take_snapshot(self):
-        pass
 
-
-    def undo(self):
-        items = self.canvas.find_all()
-        if items:
-            self.canvas.delete(items[-1])
-    
-    def get_pixel_vector(self):
-        return self.pixel_vector
-
-
-root = tk.Tk()
-root.title("Paint Application")
-app = PaintApp(root)
-root.mainloop()
+if __name__ == "__main__":
+    root = tk.Tk()
+    root.title("Paint Application")
+    app = PaintApp(root)
+    root.mainloop()
 

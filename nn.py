@@ -5,10 +5,10 @@ import random
 
 class NN():
     def __init__(self):
-        # load params if there are in file
-        # otherwise initialize random params and save them to file 
+        # if there is parameteers file load the parameters 
+        # otherwise initialize random params and save them  
         try:
-            with open('parameters.pickle', 'rb') as f:
+            with open('data/parameters.pickle', 'rb') as f:
                 param = pickle.load(f)
 
             self.W1 = param[0]
@@ -36,7 +36,7 @@ class NN():
         data_to_save = [self.W1, self.b1, self.W2, self.b2, self.W3, self.b3]
 
         #save to file
-        with open('parameters.pickle' , 'wb') as f:
+        with open('data/parameters.pickle' , 'wb') as f:
             pickle.dump(data_to_save, f)
 
 
@@ -143,8 +143,8 @@ def one_hot(Y):
     return one_hot_Y
 
 
-def get_predictions(A3):
-    return np.argmax(A3, 0)
+def get_predictions(A):
+    return np.argmax(A, 0)
 
 
 def get_accuracy(predictions, Y):
