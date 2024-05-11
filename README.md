@@ -1,1 +1,1 @@
-Tkinter digit recognition app using numpy, app recognize single and multiple digits number
+The application is capable of recognizing handwritten numbers. It utilizes a simple linear layer neural network. The application is written without high-level machine learning libraries like PyTorch, only using NumPy.
